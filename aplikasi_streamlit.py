@@ -20,40 +20,103 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.markdown("""
+custom_css = """
 <style>
-    .kpi-box {
-        background-color: #161b22;
-        padding: 20px;
-        border-radius: 10px;
-        border-left: 5px solid #58a6ff;
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-        transition: transform 0.2s;
-        margin-bottom: 15px;
-    }
-    .kpi-box:hover {
-        transform: translateY(-5px);
-        border-left: 5px solid #ff7f0e;
-    }
-    .kpi-title {
-        color: #8b949e;
-        font-size: 14px;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 5px;
-    }
-    .kpi-value {
-        color: #ffffff;
-        font-size: 28px;
-        font-weight: bold;
-    }
-    .kpi-desc {
-        color: #58a6ff;
-        font-size: 12px;
-        margin-top: 5px;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Header */
+.app-header {
+    background: rgba(22, 27, 34, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    border-radius: 12px;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    font-family: 'Inter', sans-serif;
+}
+.app-title {
+    margin: 0 0 5px 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.app-subtitle {
+    margin: 0;
+    font-size: 1rem;
+    color: #8b949e;
+}
+
+/* KPI Cards */
+.kpi-card {
+    background: rgba(22, 27, 34, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 20px;
+}
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.6);
+}
+.kpi-title {
+    margin: 0 0 8px 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.kpi-value {
+    margin: 0 0 4px 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+}
+.kpi-desc {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #8b949e;
+}
+
+/* Report Panel */
+.report-panel {
+    background: rgba(22, 27, 34, 0.4);
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    border-radius: 12px;
+    padding: 24px;
+    line-height: 1.6;
+    color: #c9d1d9;
+    font-family: 'Inter', sans-serif;
+}
+.report-panel h3 {
+    margin-top: 0;
+    font-weight: 700;
+    color: #58a6ff;
+}
+.report-panel h4 {
+    margin-top: 20px;
+    font-weight: 600;
+    color: #f0883e;
+}
+.report-panel ul {
+    padding-left: 20px;
+}
+.report-panel li {
+    margin-bottom: 8px;
+}
 </style>
-""", unsafe_allow_html=True)
+"""
+st.markdown(custom_css, unsafe_allow_html=True)
 
 # Definisikan path data default (sesuai kode Dash Anda)
 bandung_path = "POWER_Point_Daily_Bandung.csv"
@@ -64,9 +127,12 @@ jakarta_path = "POWER_Point_Daily_JakartaPusat.csv"
 # ==========================================
 
 # Header Utama
-st.title("🦟 SEIR-LM Dengue Simulation Dashboard")
-st.markdown("*Simulator Epidemiologi Demam Berdarah Dengue (DBD) berbasis Dinamika Iklim Cuaca (Suhu & Curah Hujan)*")
-st.divider()
+st.markdown("""
+<div class="app-header">
+    <h1 class="app-title">🦟 SEIR-LM Dengue Simulation Dashboard</h1>
+    <p class="app-subtitle">Simulator Epidemiologi Demam Berdarah Dengue (DBD) berbasis Dinamika Iklim Cuaca (Suhu & Curah Hujan)</p>
+</div>
+""", unsafe_allow_html=True)
 
 # --- SIDEBAR KONTROL ---
 st.sidebar.header("⚙️ Pengaturan Simulasi")
@@ -81,7 +147,7 @@ selected_city_label = st.sidebar.selectbox(
     "Pilih Kota Simulasi:", 
     list(city_options.keys())
 )
-city_type = city_options[selected_city_label]
+city_type = city_options[st.sidebar.selectbox("Pilih Kota Simulasi:", list(city_options.keys()))]
 
 # 2. Jenis Sumber Data Iklim
 climate_options = {
@@ -93,7 +159,7 @@ selected_climate_label = st.sidebar.radio(
     "Sumber Data Iklim:", 
     list(climate_options.keys())
 )
-climate_type = climate_options[selected_climate_label]
+climate_type = climate_options[st.sidebar.radio("Sumber Data Iklim:", list(climate_options.keys()))]
 
 # Placeholder untuk dataframe iklim
 climate_df = None
@@ -209,7 +275,8 @@ peak_infected_val = res_df['Infected_Human'].max()
 peak_day_num = (peak_infected_idx - res_df.index[0]).days
 
 avg_r0 = res_df['R0'].mean()
-risk_level = "Tinggi" if avg_r0 > 1.2 else ("Sedang" if avg_r0 >= 1.0 else "Rendah")
+risk_level = "Tinggi 🔴" if avg_r0 > 1.2 else ("Sedang 🟠" if avg_r0 >= 1.0 else "Rendah 🟢")
+risk_color = "#ff4d4d" if avg_r0 > 1.2 else ("#ffaa4d" if avg_r0 >= 1.0 else "#4dff4d")
 
 # Kematian spesifik akibat DBD
 delta = 0.00315 if city_type == 'bandung' else (0.00058 if city_type == 'jakarta' else 0.001)
@@ -224,21 +291,43 @@ max_carrying_cap = res_df['K_R'].max()
 # A. Baris KPI (Key Performance Indicators)
 col1, col2, col3, col4 = st.columns(4)
 
+col1, col2, col3, col4 = st.columns(4)
+
 with col1:
-    st.metric("Kasus Terinfeksi Puncak", f"{int(peak_infected_val)} Orang")
-    st.caption(f"Hari ke-{peak_day_num} ({peak_infected_idx.strftime('%d %b %Y')})")
+    st.markdown(f"""
+    <div class="kpi-card">
+        <p class="kpi-title">Kasus Terinfeksi Puncak</p>
+        <div class="kpi-value">{int(peak_infected_val):,} <span style='font-size:1rem; color:#8b949e'>Orang</span></div>
+        <p class="kpi-desc">Hari ke-{peak_day_num} ({peak_infected_idx.strftime('%d %b %Y')})</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
-    st.metric("Rerata Reproduksi R0(t)", f"{avg_r0:.2f}")
-    st.caption(f"Status Risiko: **{risk_level}**")
+    st.markdown(f"""
+    <div class="kpi-card">
+        <p class="kpi-title">Rerata Reproduksi R0(t)</p>
+        <div class="kpi-value">{avg_r0:.2f}</div>
+        <p class="kpi-desc" style="color:{risk_color}">Status: <b>{risk_level}</b></p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col3:
-    st.metric("Estimasi Korban DBD", f"{int(estimated_deaths)} Jiwa")
-    st.caption("Disease-Induced Deaths")
+    st.markdown(f"""
+    <div class="kpi-card">
+        <p class="kpi-title">Estimasi Korban DBD</p>
+        <div class="kpi-value">{int(estimated_deaths):,} <span style='font-size:1rem; color:#8b949e'>Jiwa</span></div>
+        <p class="kpi-desc">Disease-Induced Deaths</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col4:
-    st.metric("Genangan Maksimum (K)", f"{int(max_carrying_cap)} Nyamuk")
-    st.caption("Mosquito Carrying Capacity")
+    st.markdown(f"""
+    <div class="kpi-card">
+        <p class="kpi-title">Genangan Maksimum (K)</p>
+        <div class="kpi-value">{int(max_carrying_cap):,}</div>
+        <p class="kpi-desc">Mosquito Carrying Capacity</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.divider()
 
@@ -306,32 +395,40 @@ with tab4:
     status_bahaya = "WASPADA EKSTREM" if avg_r0 > 1.5 else ("SIAGA" if avg_r0 >= 1.0 else "AMAN / TERKENDALIKAN")
     risk_color = "red" if status_bahaya == "WASPADA EKSTREM" else ("orange" if status_bahaya == "SIAGA" else "green")
     
-    aquatic_diff = np.diff(res_df['Aquatic'])
+   aquatic_diff = np.diff(res_df['Aquatic'])
     best_u1_idx = int(np.argmax(aquatic_diff)) if len(aquatic_diff) > 0 else 0
     best_u1_date = res_df.index[best_u1_idx].strftime('%d %B %Y')
     
-    best_u2_idx = max(0, int((res_df['Infected_Vector'].idxmax() - pd.Timedelta(days=7) - res_df.index[0]).days))
+    # Memperbaiki error pd.Timedelta dengan menggunakan kurung ( ) yang tepat
+    best_u2_idx = max(0, (res_df['Infected_Vector'].idxmax() - pd.Timedelta(days=7) - res_df.index[0]).days)
     best_u2_date = res_df.index[best_u2_idx].strftime('%d %B %Y')
     
-    # Render Laporan
-    st.subheader("Laporan Analisis Epidemiologi Model SEIR-LM")
-    st.markdown(f"**Status Kesehatan Wilayah:** <span style='color:{risk_color}; font-size:1.1em; font-weight:bold;'>{status_bahaya}</span>", unsafe_allow_html=True)
-    st.divider()
-    
-    st.markdown("#### 🔍 Temuan Utama Simulasi:")
-    kalimat_r0 = "Wabah berpotensi menyebar dan menetap secara endemik karena R0 > 1." if avg_r0 >= 1.0 else "Wabah akan mereda secara alami karena rata-rata R0 < 1."
     st.markdown(f"""
-    * Rata-rata angka reproduksi R0(t) adalah **{avg_r0:.2f}**. {kalimat_r0}
-    * Kasus infeksi manusia maksimum terjadi pada hari ke-{peak_day_num} ({peak_infected_idx.strftime('%d %B %Y')}) sebanyak **{int(peak_infected_val)} orang**.
-    * Kapasitas lingkungan maksimum mencapai **{int(max_carrying_cap)} genangan penampungan nyamuk** akibat pengaruh curah hujan.
-    * Total estimasi kematian spesifik DBD selama periode simulasi adalah **{int(estimated_deaths)} jiwa**.
-    """)
-    
-    st.markdown("#### 🛡️ Panduan Waktu Intervensi Vektor (Rekomendasi Kebijakan):")
-    st.markdown(f"""
-    * **Aplikasi Larvasida (u1):** Rekomendasi terbaik dilakukan sebelum atau pada tanggal **{best_u1_date}** (hari ke-{best_u1_idx}) ketika laju pertumbuhan populasi larva sedang berada pada tingkat tertinggi.
-    * **Penyemprotan / Fogging Nyamuk Dewasa (u2):** Paling tepat diimplementasikan pada atau sebelum tanggal **{best_u2_date}** (hari ke-{best_u2_idx}), yaitu 7 hari sebelum puncak populasi nyamuk dewasa pembawa virus (Iv).
-    """)
+    <div class="report-panel">
+        <h3>LAPORAN ANALISIS EPIDEMIOLOGI MODEL SEIR-LM</h3>
+        <p><strong>Status Kesehatan Wilayah:</strong> <span style="color: {risk_color}; font-weight: bold; font-size: 1.1em;">{risk_level}</span></p>
+        <hr style="border-color: #30363d;">
+        
+        <h4>Temuan Utama Simulasi:</h4>
+        <ul>
+            <li>Rata-rata angka reproduksi R0(t) adalah <strong>{avg_r0:.2f}</strong>. {"Wabah berpotensi menyebar." if avg_r0 >= 1.0 else "Wabah akan mereda secara alami."}</li>
+            <li>Kasus infeksi manusia maksimum terjadi pada hari ke-<strong>{peak_day_num}</strong> ({peak_infected_idx.strftime('%d %B %Y')}) sebanyak <strong>{int(peak_infected_val):,} orang</strong>.</li>
+            <li>Kapasitas lingkungan maksimum mencapai <strong>{int(max_carrying_cap):,} genangan penampungan nyamuk</strong> akibat curah hujan.</li>
+            <li>Total estimasi kematian spesifik DBD selama periode simulasi adalah <strong>{int(estimated_deaths):,} jiwa</strong>.</li>
+        </ul>
+        
+        <h4>Panduan Waktu Intervensi Vektor (Rekomendasi Kebijakan):</h4>
+        <ul>
+            <li><strong>Aplikasi Larvasida (u1):</strong> Rekomendasi terbaik dilakukan sebelum atau pada tanggal <span style="color:#58a6ff; font-weight:bold;">{best_u1_date}</span> (hari ke-{best_u1_idx}) ketika laju pertumbuhan larva paling tinggi.</li>
+            <li><strong>Penyemprotan / Fogging Nyamuk Dewasa (u2):</strong> Paling tepat pada <span style="color:#58a6ff; font-weight:bold;">{best_u2_date}</span> (hari ke-{best_u2_idx}), yaitu 7 hari sebelum puncak nyamuk infektif (Iv).</li>
+        </ul>
+        
+        <div style="background-color: rgba(31, 41, 55, 0.5); padding: 15px; border-radius: 5px; border-left: 5px solid #3b82f6; margin-top: 20px;">
+            <h5 style="margin: 0 0 5px 0; color: #3b82f6;">Catatan Biofisis:</h5>
+            <p style="margin: 0; font-size: 0.9em; color: #9ca3af;">Model ini dipengaruhi secara mekanistik oleh iklim. Suhu rata-rata di atas 27.5°C mempercepat replikasi virus, sedangkan akumulasi curah hujan memicu pembentukan genangan air K(R) yang memperluas sarang nyamuk.</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.info("""
     **Catatan Biofisis:**
