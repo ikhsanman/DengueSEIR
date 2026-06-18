@@ -225,13 +225,8 @@ max_carrying_cap = res_df['K_R'].max()
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.markdown(f"""
-    <div class="kpi-box">
-        <div class="kpi-title">Kasus Terinfeksi Puncak</div>
-        <div class="kpi-value">1,245 <span style='font-size:16px; color:#ff4d4d;'>Orang</span></div>
-        <div class="kpi-desc">Hari ke-98 (25 Mar 2026)</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric("Kasus Terinfeksi Puncak", f"{int(peak_infected_val)} Orang")
+    st.caption(f"Hari ke-{peak_day_num} ({peak_infected_idx.strftime('%d %b %Y')})")
 
 with col2:
     st.metric("Rerata Reproduksi R0(t)", f"{avg_r0:.2f}")
