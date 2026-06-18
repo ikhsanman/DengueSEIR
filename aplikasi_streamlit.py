@@ -20,6 +20,41 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+st.markdown("""
+<style>
+    .kpi-box {
+        background-color: #161b22;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 5px solid #58a6ff;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        transition: transform 0.2s;
+        margin-bottom: 15px;
+    }
+    .kpi-box:hover {
+        transform: translateY(-5px);
+        border-left: 5px solid #ff7f0e;
+    }
+    .kpi-title {
+        color: #8b949e;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+    .kpi-value {
+        color: #ffffff;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .kpi-desc {
+        color: #58a6ff;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Definisikan path data default (sesuai kode Dash Anda)
 bandung_path = "POWER_Point_Daily_Bandung.csv"
 jakarta_path = "POWER_Point_Daily_JakartaPusat.csv"
@@ -190,8 +225,13 @@ max_carrying_cap = res_df['K_R'].max()
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric("Kasus Terinfeksi Puncak", f"{int(peak_infected_val)} Orang")
-    st.caption(f"Hari ke-{peak_day_num} ({peak_infected_idx.strftime('%d %b %Y')})")
+    st.markdown(f"""
+    <div class="kpi-box">
+        <div class="kpi-title">Kasus Terinfeksi Puncak</div>
+        <div class="kpi-value">1,245 <span style='font-size:16px; color:#ff4d4d;'>Orang</span></div>
+        <div class="kpi-desc">Hari ke-98 (25 Mar 2026)</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
     st.metric("Rerata Reproduksi R0(t)", f"{avg_r0:.2f}")
