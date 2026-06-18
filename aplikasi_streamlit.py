@@ -458,7 +458,7 @@ with tab5:
 
     st.divider()
 
-    st.markdown("#### ⚙️ Sistem Persamaan Diferensial Model")
+    st.markdown("#### 🔁 Sistem Persamaan Diferensial Model")
     st.markdown("""
     Berikut adalah rincian Sistem Persamaan Diferensial model ini:
     """)
@@ -466,18 +466,23 @@ with tab5:
     **Sub-sistem Populasi Vektor**
     """)
     st.latex(r'''
-    \frac{dA}{dt} &= \phi \left(1 - \frac{A}{K(R)}\right) (S_v + I_v) - (\sigma + \mu_A )A \\
-    \frac{dS_v}{dt} &= \sigma A - \beta_{hv}(T)S_v\frac{I_h}{N_h} - \mu_v(T)S_v \\
-    \frac{dI_v}{dt} &= \beta_{hv}(T)S_v\frac{I_h}{N_h} - \mu_v(T)I_v
+    \begin{aligned}
+    \frac{dS_h}{dt} &= \Lambda_h - \beta_{vh}(T)S_h\frac{I_v}{N_h} - \mu_h S_h + \omega R_h \\
+    \frac{dE_h}{dt} &= \beta_{vh}(T)S_h\frac{I_v}{N_h} - (\alpha + \mu_h)E_h \\
+    \frac{dI_h}{dt} &= \alpha E_h - (\gamma + \mu_h + \delta)I_h \\
+    \frac{dR_h}{dt} &= \gamma I_h - \mu_h R_h - \omega R_h
+    \end{aligned}
     ''')
     st.markdown("""
     **Sub-sistem Populasi Manusia**
     """)
     st.latex(r'''
+    \begin{aligned}
     \frac{dS_h}{dt} &= \Lambda_h - \beta_{vh}(T)S_h\frac{I_v}{N_h} - \mu_h S_h + \omega R_h \\
     \frac{dE_h}{dt} &= \beta_{vh}(T)S_h\frac{I_v}{N_h} - (\alpha + \mu_h)E_h \\
     \frac{dI_h}{dt} &= \alpha E_h - (\gamma + \mu_h + \delta)I_h \\
     \frac{dR_h}{dt} &= \gamma I_h - \mu_h R_h - \omega R_h
+    \end{aligned}
     ''')
     
     st.divider()
