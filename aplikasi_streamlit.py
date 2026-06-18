@@ -402,32 +402,24 @@ with tab4:
     # Memperbaiki error pd.Timedelta dengan menggunakan kurung ( ) yang tepat
     best_u2_idx = max(0, (res_df['Infected_Vector'].idxmax() - pd.Timedelta(days=7) - res_df.index[0]).days)
     best_u2_date = res_df.index[best_u2_idx].strftime('%d %B %Y')
+
+    st.subheader("Laporan Analisis Epidemiologi Model SEIR-LM")
+    st.markdown(f"**Status Kesehatan Wilayah:** <span style='color:{risk_color}; font-size:1.1em; font-weight:bold;'>{status_bahaya}</span>", unsafe_allow_html=True)
+    st.divider()
     
-    st.html(f"""
-    <div class="report-panel">
-        <h3>LAPORAN ANALISIS EPIDEMIOLOGI MODEL SEIR-LM</h3>
-        <p><strong>Status Kesehatan Wilayah:</strong> <span style="color: {risk_color}; font-weight: bold; font-size: 1.1em;">{risk_level}</span></p>
-        <hr style="border-color: #30363d;">
-        
-        <h4>Temuan Utama Simulasi:</h4>
-        <ul>
-            <li>Rata-rata angka reproduksi R0(t) adalah <strong>{avg_r0:.2f}</strong>. {"Wabah berpotensi menyebar." if avg_r0 >= 1.0 else "Wabah akan mereda secara alami."}</li>
-            <li>Kasus infeksi manusia maksimum terjadi pada hari ke-<strong>{peak_day_num}</strong> ({peak_infected_idx.strftime('%d %B %Y')}) sebanyak <strong>{int(peak_infected_val):,} orang</strong>.</li>
-            <li>Kapasitas lingkungan maksimum mencapai <strong>{int(max_carrying_cap):,} genangan penampungan nyamuk</strong> akibat curah hujan.</li>
-            <li>Total estimasi kematian spesifik DBD selama periode simulasi adalah <strong>{int(estimated_deaths):,} jiwa</strong>.</li>
-        </ul>
-        
-        <h4>Panduan Waktu Intervensi Vektor (Rekomendasi Kebijakan):</h4>
-        <ul>
-            <li><strong>Aplikasi Larvasida (u1):</strong> Rekomendasi terbaik dilakukan sebelum atau pada tanggal <span style="color:#58a6ff; font-weight:bold;">{best_u1_date}</span> (hari ke-{best_u1_idx}) ketika laju pertumbuhan larva paling tinggi.</li>
-            <li><strong>Penyemprotan / Fogging Nyamuk Dewasa (u2):</strong> Paling tepat pada <span style="color:#58a6ff; font-weight:bold;">{best_u2_date}</span> (hari ke-{best_u2_idx}), yaitu 7 hari sebelum puncak nyamuk infektif (Iv).</li>
-        </ul>
-        
-        <div style="background-color: rgba(31, 41, 55, 0.5); padding: 15px; border-radius: 5px; border-left: 5px solid #3b82f6; margin-top: 20px;">
-            <h5 style="margin: 0 0 5px 0; color: #3b82f6;">Catatan Biofisis:</h5>
-            <p style="margin: 0; font-size: 0.9em; color: #9ca3af;">Model ini dipengaruhi secara mekanistik oleh iklim. Suhu rata-rata di atas 27.5°C mempercepat replikasi virus, sedangkan akumulasi curah hujan memicu pembentukan genangan air K(R) yang memperluas sarang nyamuk.</p>
-        </div>
-    </div>
+    st.markdown("#### 🔍 Temuan Utama Simulasi:")
+    kalimat_r0 = "Wabah berpotensi menyebar dan menetap secara endemik karena R0 > 1." if avg_r0 >= 1.0 else "Wabah akan mereda secara alami karena rata-rata R0 < 1."
+    st.markdown(f"""
+    * Rata-rata angka reproduksi R0(t) adalah **{avg_r0:.2f}**. {kalimat_r0}
+    * Kasus infeksi manusia maksimum terjadi pada hari ke-{peak_day_num} ({peak_infected_idx.strftime('%d %B %Y')}) sebanyak **{int(peak_infected_val)} orang**.
+    * Kapasitas lingkungan maksimum mencapai **{int(max_carrying_cap)} genangan penampungan nyamuk** akibat pengaruh curah hujan.
+    * Total estimasi kematian spesifik DBD selama periode simulasi adalah **{int(estimated_deaths)} jiwa**.
+    """)
+    
+    st.markdown("#### 🛡️ Panduan Waktu Intervensi Vektor (Rekomendasi Kebijakan):")
+    st.markdown(f"""
+    * **Aplikasi Larvasida:** Rekomendasi terbaik dilakukan sebelum atau pada tanggal **{best_u1_date}** (hari ke-{best_u1_idx}) ketika laju pertumbuhan populasi larva sedang berada pada tingkat tertinggi.
+    * **Penyemprotan / Fogging Nyamuk Dewasa:** Paling tepat diimplementasikan pada atau sebelum tanggal **{best_u2_date}** (hari ke-{best_u2_idx}), yaitu 7 hari sebelum puncak populasi nyamuk dewasa pembawa virus (Iv).
     """)
     
     st.info("""
