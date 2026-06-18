@@ -395,7 +395,7 @@ with tab4:
     status_bahaya = "WASPADA EKSTREM" if avg_r0 > 1.5 else ("SIAGA" if avg_r0 >= 1.0 else "AMAN / TERKENDALIKAN")
     risk_color = "red" if status_bahaya == "WASPADA EKSTREM" else ("orange" if status_bahaya == "SIAGA" else "green")
     
-   aquatic_diff = np.diff(res_df['Aquatic'])
+    aquatic_diff = np.diff(res_df['Aquatic'])
     best_u1_idx = int(np.argmax(aquatic_diff)) if len(aquatic_diff) > 0 else 0
     best_u1_date = res_df.index[best_u1_idx].strftime('%d %B %Y')
     
