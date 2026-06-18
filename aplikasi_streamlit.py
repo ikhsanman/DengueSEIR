@@ -15,7 +15,7 @@ from utils import run_simulation, c_briere, T_min_b, T_max_b, p_hv, p_vh
 # ==========================================
 st.set_page_config(
     page_title="SEIR-LM Dengue Simulation Dashboard",
-    page_icon="🦟",
+    page_icon="🌏",
     layout="wide",
     initial_sidebar_state="expanded"
 )
