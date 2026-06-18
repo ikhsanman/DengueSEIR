@@ -332,7 +332,7 @@ with col4:
 st.divider()
 
 # B. Tabs Pilihan Grafik & Analisis
-tab1, tab2, tab3, tab4 = st.tabs([
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📈 Dinamika Host & Vektor", 
     "🦠 Analisis Laju Transmisi R0(t)", 
     "🌦️ Dinamika Cuaca (Input)", 
