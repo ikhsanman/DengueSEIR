@@ -413,13 +413,13 @@ else:
         """, unsafe_allow_html=True)
 
     with col2:
-    st.markdown(f"""
-    <div class="kpi-card">
-        <p class="kpi-title">Rerata Reproduksi R0(t)</p>
-        <div class="kpi-value">{avg_r0:.2f}</div>
-        <p class="kpi-desc" style="color:{risk_color}">Status: <b>{risk_level}</b></p>
-    </div>
-    """, unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="kpi-card">
+            <p class="kpi-title">Rerata Reproduksi R0(t)</p>
+            <div class="kpi-value">{avg_r0:.2f}</div>
+            <p class="kpi-desc" style="color:{risk_color}">Status: <b>{risk_level}</b></p>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
