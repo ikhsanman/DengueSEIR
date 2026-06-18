@@ -336,7 +336,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "📈 Dinamika Host & Vektor", 
     "🦠 Analisis Laju Transmisi R0(t)", 
     "🌦️ Dinamika Cuaca (Input)", 
-    "📑 Laporan Analisis & Rekomendasi"
+    "📑 Laporan Analisis & Rekomendasi",
     "📖 Informasi Model SEIR-Vector"
 ])
 
