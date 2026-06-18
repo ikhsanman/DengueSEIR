@@ -147,7 +147,7 @@ selected_city_label = st.sidebar.selectbox(
     "Pilih Kota Simulasi:", 
     list(city_options.keys())
 )
-city_type = city_options[st.sidebar.selectbox("Pilih Kota Simulasi:", list(city_options.keys()))]
+city_type = city_options[selected_city_label]
 
 # 2. Jenis Sumber Data Iklim
 climate_options = {
@@ -159,7 +159,7 @@ selected_climate_label = st.sidebar.radio(
     "Sumber Data Iklim:", 
     list(climate_options.keys())
 )
-climate_type = climate_options[st.sidebar.radio("Sumber Data Iklim:", list(climate_options.keys()))]
+climate_type = climate_options[selected_climate_label]
 
 # Placeholder untuk dataframe iklim
 climate_df = None
