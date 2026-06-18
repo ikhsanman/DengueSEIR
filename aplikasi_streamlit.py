@@ -403,7 +403,7 @@ with tab4:
     best_u2_idx = max(0, (res_df['Infected_Vector'].idxmax() - pd.Timedelta(days=7) - res_df.index[0]).days)
     best_u2_date = res_df.index[best_u2_idx].strftime('%d %B %Y')
     
-    st.markdown(f"""
+    st.html(f"""
     <div class="report-panel">
         <h3>LAPORAN ANALISIS EPIDEMIOLOGI MODEL SEIR-LM</h3>
         <p><strong>Status Kesehatan Wilayah:</strong> <span style="color: {risk_color}; font-weight: bold; font-size: 1.1em;">{risk_level}</span></p>
@@ -428,7 +428,7 @@ with tab4:
             <p style="margin: 0; font-size: 0.9em; color: #9ca3af;">Model ini dipengaruhi secara mekanistik oleh iklim. Suhu rata-rata di atas 27.5°C mempercepat replikasi virus, sedangkan akumulasi curah hujan memicu pembentukan genangan air K(R) yang memperluas sarang nyamuk.</p>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     st.info("""
     **Catatan Biofisis:**
