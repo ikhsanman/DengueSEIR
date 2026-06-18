@@ -21,8 +21,8 @@ st.set_page_config(
 )
 
 # Definisikan path data default (sesuai kode Dash Anda)
-bandung_path = r"https://://githubusercontent.com/ikhsanman/repository/main/DengueSEIR/POWER_Point_Daily_2015-2024_006d92S_107d61E_LST.csv"
-jakarta_path = r"https://://githubusercontent.com/ikhsanman/repository/main/DengueSEIR/POWER_Point_Daily_2015-2024_006d18S_106d83E_LST.csv"
+bandung_path = POWER_Point_Daily_2015-2024_006d92S_107d61E_LST.csv
+jakarta_path = POWER_Point_Daily_2015-2024_006d18S_106d83E_LST.csv
 
 # ==========================================
 # 2. TATA LETAK APLIKASI (HEADER & SIDEBAR)
