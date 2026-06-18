@@ -21,8 +21,8 @@ st.set_page_config(
 )
 
 # Definisikan path data default (sesuai kode Dash Anda)
-bandung_path = POWER_Point_Daily_Bandung.csv
-jakarta_path = POWER_Point_Daily_JakartaPusat.csv
+bandung_path = "POWER_Point_Daily_Bandung.csv"
+jakarta_path = "POWER_Point_Daily_JakartaPusat.csv"
 
 # ==========================================
 # 2. TATA LETAK APLIKASI (HEADER & SIDEBAR)
