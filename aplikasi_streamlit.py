@@ -337,6 +337,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "🦠 Analisis Laju Transmisi R0(t)", 
     "🌦️ Dinamika Cuaca (Input)", 
     "📑 Laporan Analisis & Rekomendasi"
+    "📖 Informasi Model SEIR-Vector"
 ])
 
 # --- TAB 1: Dinamika Host & Vektor ---
@@ -426,3 +427,61 @@ with tab4:
     **Catatan Biofisis:**
     Model ini dipengaruhi secara mekanistik oleh iklim. Suhu rata-rata di atas 27.5°C mempercepat replikasi virus (Briere), sedangkan akumulasi curah hujan 14 hari sebelumnya memicu pembentukan genangan air K(R) yang memperluas sarang nyamuk.
     """)
+
+# --- Tab 5 Penjelasan Model
+with tab5:
+    st.subheader("📖 Informasi Model SEIR-Vector Non-Autonomous")
+    st.markdown("""
+    Dashboard ini menggunakan model **SEIR-Vector Non-Autonomous**, sebuah model matematika dinamis yang membagi populasi ke dalam dua subsistem utama: **Manusia (Host)** dan **Nyamuk (Vektor)**. Model ini disebut *non-autonomous* karena parameter penularannya tidak statis, melainkan terintegrasi secara kontinu dengan fluktuasi data iklim harian (suhu dan curah hujan).
+    """)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("#### 👥 Kompartemen Manusia ($N_h$)")
+        st.markdown("""
+        Total populasi manusia ($N_h$) dibagi menjadi 4 kompartemen:
+        * **$S_h$ (Susceptible)**: Kelompok manusia sehat yang rentan terhadap infeksi virus dengue.
+        * **$E_h$ (Exposed)**: Kelompok yang sedang dalam masa inkubasi intrinsik (sudah digigit nyamuk terinfeksi namun belum menunjukkan gejala dan belum dapat menularkan virus).
+        * **$I_h$ (Infected)**: Kelompok manusia terinfeksi yang menunjukkan gejala klinis dan mampu menularkan virus ke nyamuk yang menggigitnya.
+        * **$R_h$ (Recovered)**: Kelompok manusia yang telah sembuh dan memiliki kekebalan sementara terhadap virus.
+        """)
+        
+    with col2:
+        st.markdown("#### 🦟 Kompartemen Vektor ($N_v$)")
+        st.markdown("""
+        Total populasi nyamuk dewasa ($N_v$) dan fase awalnya dipisahkan menjadi:
+        * **$A$ (Aquatic)**: Fase pra-dewasa nyamuk yang hidup di genangan air (mencakup fase telur, larva, dan pupa).
+        * **$S_v$ (Susceptible Vector)**: Nyamuk dewasa yang sehat dan rentan terhadap infeksi virus dengue.
+        * **$I_v$ (Infected Vector)**: Nyamuk dewasa terinfeksi yang dapat menularkan virus ke manusia dan akan membawa virus tersebut selama sisa hidupnya.
+        """)
+
+    st.divider()
+    
+    st.markdown("#### ⚙️ Penjelasan Parameter Model")
+    
+    st.markdown("""
+    Berikut adalah rincian parameter epidemiologi dan biologi yang menyusun dinamika model ini:
+    
+    **A. Parameter Demografi & Penyakit Manusia:**
+    * $\\Lambda_h$: Laju kelahiran atau rekrutmen populasi manusia baru.
+    * $\\mu_h$: Laju kematian alami manusia (terlepas dari penyakit).
+    * $\\alpha$: Laju inkubasi virus di dalam tubuh manusia (transisi dari $E_h$ ke $I_h$).
+    * $\\gamma$: Laju kesembuhan manusia yang terinfeksi.
+    * $\\delta$: Laju kematian spesifik akibat penyakit DBD (*Case Fatality Rate*).
+    * $\\omega$: Laju hilangnya kekebalan tubuh terhadap virus (*waning immunity*), membuat manusia kembali rentan.
+    
+    **B. Parameter Vektor Nyamuk & Probabilitas Transmisi:**
+    * $p_{hv}$: Probabilitas keberhasilan transmisi virus dari manusia ke nyamuk per gigitan.
+    * $p_{vh}$: Probabilitas keberhasilan transmisi virus dari nyamuk ke manusia per gigitan.
+    * $\\varphi$: Laju bertelur intrinsik nyamuk betina per kapita.
+    * $\\sigma$: Laju pematangan atau perkembangan dari fase akuatik ($A$) menjadi nyamuk dewasa ($S_v$).
+    * $\\mu_A$: Laju kematian alami pada fase akuatik.
+    
+    **C. Parameter Terdorong Iklim (*Climate-Driven Parameters*):**
+    * $K(R)$: Daya tampung (*carrying capacity*) genangan air habitat nyamuk. Parameter ini berfluktuasi berdasarkan **akumulasi curah hujan 14 hari sebelumnya**, dengan memperhitungkan $K_{min}$ (kapasitas genangan permanen dasar) dan $\\theta$ (faktor konversi intensitas hujan menjadi kapasitas genangan).
+    * $b(T)$: Laju gigitan nyamuk yang bergantung pada suhu udara ($T$). Dimodelkan menggunakan **Fungsi Briere**, di mana aktivitas gigitan mencapai puncaknya pada rentang suhu optimal sekitar 28°C - 30°C.
+    * $\\mu_v(T)$: Laju kematian nyamuk dewasa yang sangat sensitif terhadap suhu ekstrem (kematian meningkat saat suhu terlalu dingin atau terjadi gelombang panas).
+    """)
+    
+    st.info("💡 **Catatan Analitik:** Model ini menghitung **Instantaneous Basic Reproduction Number ($R_0(t)$)** secara *real-time*. Nilai ini membuktikan bahwa interaksi silang antara fluktuasi probabilitas transmisi, laju gigitan yang didorong suhu, dan usia hidup vektor merupakan faktor utama yang menentukan lonjakan dan redanya wabah DBD di suatu wilayah.")
