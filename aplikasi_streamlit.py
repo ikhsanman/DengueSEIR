@@ -290,7 +290,7 @@ if mulai_simulasi:
 
 if st.session_state.sim_data is None:
     # --- TAMPILAN AWAL (BELUM ADA SIMULASI) ---
-    st.info("👋 Selamat datang! Silakan atur parameter simulasi di bilah sisi (sidebar) dan klik **Jalankan Simulasi** untuk melihat hasil.")
+    st.info("Selamat datang! Silakan atur parameter simulasi di bilah sisi (sidebar) dan klik **Jalankan Simulasi** untuk melihat hasil.")
     
     # Pindahkan isi Tab 5 ke sini
     st.subheader("📖 Informasi Model SEIR-Vector Non-Autonomous")
@@ -321,7 +321,7 @@ if st.session_state.sim_data is None:
 
     st.divider()
 
-    st.markdown("#### 🔁 Sistem Persamaan Diferensial Model")
+    st.markdown("#### Sistem Persamaan Diferensial Model")
     st.markdown("""
     Berikut adalah rincian Sistem Persamaan Diferensial model ini:
     """)
@@ -350,7 +350,7 @@ if st.session_state.sim_data is None:
     
     st.divider()
     
-    st.markdown("#### ⚙️ Penjelasan Parameter Model")
+    st.markdown("#### Penjelasan Parameter Model")
     
     st.markdown("""
     Berikut adalah rincian parameter epidemiologi dan biologi yang menyusun dinamika model ini:
@@ -443,11 +443,11 @@ else:
     
     # B. Tabs Pilihan Grafik & Analisis
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
-        "📈 Dinamika Host & Vektor", 
-        "🦠 Analisis Laju Transmisi R0(t)", 
-        "🌦️ Dinamika Cuaca (Input)", 
-        "📑 Laporan Analisis & Rekomendasi",
-        "📖 Informasi Model SEIR-Vector"
+        "Dinamika Host & Vektor", 
+        "Analisis Laju Transmisi R0(t)", 
+        "Dinamika Cuaca (Input)", 
+        "Laporan Analisis & Rekomendasi",
+        "Informasi Model SEIR-Vector"
     ])
     
     # --- TAB 1: Dinamika Host & Vektor ---
